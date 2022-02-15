@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 // const path = require("path")
-const { sendEmailToMe, sendEmailToUser } = require('./account')
+const { sendEmailToMe, sendEmailToUser } = require("./account");
 // const postsRoutes = require('./routes/posts')
 // const userRoutes = require('./routes/user')
 
@@ -18,7 +18,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use("/images", express.static(path.join(__dirname, "images")));
-// app.use("/", express.static(path.join(__dirname, "angular")));
+app.use("/", express.static(path.join(__dirname, "angular")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -45,23 +45,23 @@ app.use((req, res, next) => {
 //     res.status(200).send(users)
 // })
 
-app.post('/sendEmail', (req, res, next) => {
-    try {
-      sendEmailToMe(req.body.name, req.body.email, req.body.message);
-      sendEmailToUser(req.body.name, req.body.email);
-        res.status(200).json({
-            message : 'Message recieved',
-            email : req.body.email
-        })
-    } catch(e) {
-        res.status(400).send(e)
-    }
-})
+app.post("/sendEmail", (req, res, next) => {
+  try {
+    sendEmailToMe(req.body.name, req.body.email, req.body.message);
+    sendEmailToUser(req.body.name, req.body.email);
+    res.status(200).json({
+      message: "Message recieved",
+      email: req.body.email,
+    });
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
 
 // app.use("/api/posts", postsRoutes)
 // app.use("/api/user", userRoutes)
-// app.use((req, res, next) => {
-//   res.sendFile(path.join(__dirname, "angular", "index.html"))
-// })
+app.use((req, res, next) => {
+  res.sendFile(path.join(__dirname, "angular", "index.html"));
+});
 
 module.exports = app;
